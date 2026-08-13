@@ -15,10 +15,14 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
 }
 
+
+
 const inputArray = [12, 37, 66, 78, 66, 23, 49, 52, 9];
 const bst = new Tree(inputArray);
 
+console.log(bst.levelOrderForEach(logValue))
 
-console.log(inputArray);
-bst.deleteItem(78);
-prettyPrint(bst.root);
+
+function logValue(value) {
+  console.log(value)
+}

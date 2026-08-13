@@ -13,6 +13,7 @@ class Tree {
     }
 
     static #buildTree(arr) {
+        if(!Array.isArray(arr) || arr.length === 0) return null;
         const preparedArray = [];
         for(let item of arr) {
             if(!preparedArray.includes(item)){
@@ -33,14 +34,6 @@ class Tree {
         }
 
         return buildBST(0, preparedArray.length - 1);
-    }
-
-    #getMin(node) {
-        while(node.left !== null) {
-            node = node.left;
-        }
-
-        return node;
     }
 
     includes(value) {
@@ -141,6 +134,56 @@ class Tree {
         subTreeRootNode.left = subTreePointer.right;
         subTreePointer.right = null;
         
+    }
+
+    levelOrderForEach(callback) {
+        if(this.root === null) return;
+        if(typeof callback !== 'function') {
+            throw new Error('A callback is required.');
+        }
+
+        let rootNode = this.root;
+        const queue = [];
+        queue.push(rootNode);
+        let index = 0;
+
+        while(index < queue.length) {
+            const current = queue[index];
+            callback(current.value);
+
+            const leftChild = current.left;
+            const rightChild = current.right;
+
+
+            if(leftChild !== null) {
+                queue.push(leftChild);
+            }
+
+            if(rightChild !== null) {
+                queue.push(rightChild);
+            }
+
+            index++;
+        }
+
+        return 'traversal completed'
+
+    }
+
+    levelOrderForEachRec(callback, node) {
+        
+        callback(node.value);
+        let pointer = node;
+        let leftNode = node.left;
+        let rightNode = node.right;
+
+        node.next = leftNode;
+        leftNode.next = rightNode;
+
+        
+
+        this.levelOrderForEachRec(callback, node.right);
+
     }
 }
 
