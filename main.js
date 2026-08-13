@@ -20,5 +20,5 @@ const bst = new Tree(inputArray);
 
 
 console.log(inputArray);
-bst.insert(88);
+bst.deleteItem(78);
 prettyPrint(bst.root);

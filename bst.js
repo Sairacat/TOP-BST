@@ -35,6 +35,14 @@ class Tree {
         return buildBST(0, preparedArray.length - 1);
     }
 
+    #getMin(node) {
+        while(node.left !== null) {
+            node = node.left;
+        }
+
+        return node;
+    }
+
     includes(value) {
         let current = this.root;
         while(current !== null) {
@@ -71,103 +79,68 @@ class Tree {
 
     deleteItem(value) {
         if(this.root === null) return;
-
-        let nodeWillBeRemoved;
-        let nodeWillBeConnected;
-        let subTreeRootPointer;
-        let subTreeNextPointer;
-
         let current = this.root;
-        let isGreater = value > current.value;
-        let nextPointer = isGreater ? current.right : current.left;
+        let parent = null;
+        let nodeWillBeRemoved;
 
-        while(nextPointer !== null) {
-            if(nextPointer.value === value) {
-                nodeWillBeRemoved = nextPointer;
-                nodeWillBeConnected = current;
-                break;
-            }
-            current = nextPointer;
-            isGreater = value > current.value;
-            nextPointer = isGreater ? current.right : current.left;
+        while(current !== null) {
+            if(current.value === value) break;
+            parent = current;
+            current = value > current.value ? current.right : current.left;
         }
 
-        if(nextPointer === null) return;
+        if(current === null) return;
+        nodeWillBeRemoved = current;
 
         if(nodeWillBeRemoved.left === null && nodeWillBeRemoved.right === null) {
-            if(isGreater) {
-                nodeWillBeConnected.right = null;
+            if(parent === null) {
+                this.root = null;
+            }else if(parent.value < value) {
+                parent.right = null;
             }else {
-                nodeWillBeConnected.left = null;
+                parent.left = null;
             }
             return;
         }
 
         if(nodeWillBeRemoved.right === null) {
-            subTreeRootPointer = nodeWillBeRemoved.left;
-            subTreeNextPointer = subTreeRootPointer.right;
-
-            if(subTreeNextPointer === null) {
-                subTreeRootPointer.right = nodeWillBeRemoved.right;
-                nodeWillBeRemoved.left = null;
-                if(isGreater) {
-                    nodeWillBeConnected.right = subTreeRootPointer;
-                }else {
-                    nodeWillBeConnected.left = subTreeRootPointer;
-                }
-                return;
-            }
-
-            while(subTreeNextPointer.right !== null) {
-                subTreeRootPointer = subTreeNextPointer;
-                subTreeNextPointer = subTreeNextPointer.right;
-            }
-
-            subTreeNextPointer.left = nodeWillBeRemoved.left;
-            subTreeNextPointer.right = nodeWillBeRemoved.right;
-            subTreeRootPointer.right = null;
-            nodeWillBeRemoved.left = null;
-
-            if(isGreater) {
-                nodeWillBeConnected.right = subTreeNextPointer;
-            }else {
-                nodeWillBeConnected.left = subTreeNextPointer;
-            }
-
+            let leftNode = nodeWillBeRemoved.left;
+            nodeWillBeRemoved.value = leftNode.value;
+            nodeWillBeRemoved.left = leftNode.left;
+            nodeWillBeRemoved.right = leftNode.right;
+            leftNode.left = null;
+            leftNode.right = null;
             return;
         }
 
-        subTreeRootPointer = nodeWillBeRemoved.right;
-        subTreeNextPointer = subTreeRootPointer.left;
-        if(subTreeNextPointer === null) {
-            subTreeRootPointer.left = nodeWillBeRemoved.left;
-            nodeWillBeRemoved.right = null;
-            if(isGreater) {
-                nodeWillBeConnected.right = subTreeRootPointer;
-            }else {
-                nodeWillBeConnected.left = subTreeRootPointer;
-            }
+        if(nodeWillBeRemoved.left === null) {
+            let rightNode = nodeWillBeRemoved.right;
+            nodeWillBeRemoved.value = rightNode.value;
+            nodeWillBeRemoved.right = rightNode.right;
+            nodeWillBeRemoved.left = rightNode.left;
+            rightNode.left = null;
+            rightNode.right = null;
             return;
         }
 
-        while(subTreeNextPointer.left !== null) {
-            subTreeRootPointer = subTreeNextPointer;
-            subTreeNextPointer = subTreeNextPointer.left;
+        let subTreeRootNode = nodeWillBeRemoved.right;
+        let subTreePointer = subTreeRootNode.left;
+
+        if(subTreePointer === null) {
+            nodeWillBeRemoved.value = subTreeRootNode.value;
+            nodeWillBeRemoved.right = subTreeRootNode.right;
+            return;
         }
 
-        subTreeNextPointer.right = nodeWillBeRemoved.right;
-        subTreeNextPointer.left = nodeWillBeRemoved.left;
-        subTreeRootPointer.left = null;
-        nodeWillBeRemoved.right = null;
-
-        if(isGreater) {
-            nodeWillBeConnected.right = subTreeNextPointer;
-        }else {
-            nodeWillBeConnected.left = subTreeNextPointer;
+        while(subTreePointer.left !== null) {
+            subTreeRootNode = subTreePointer;
+            subTreePointer = subTreePointer.left;
         }
 
-
-
+        nodeWillBeRemoved.value = subTreePointer.value;
+        subTreeRootNode.left = subTreePointer.right;
+        subTreePointer.right = null;
+        
     }
 }
 
