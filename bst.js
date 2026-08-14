@@ -255,6 +255,47 @@ class Tree {
 
         return 'completed';
     }
+
+    height(value) {
+        if(this.root === null) return;
+        let current = this.root;
+
+        while(current !== null) {
+            if(current.value === value) break;
+            current = current.value < value ? current.right : current.left
+        }
+
+        if(current === null) return null;
+        let targetNode = current;
+
+        const dive = function(node, level = 0) {
+            if(node === null) {
+                return level - 1;
+            };
+
+            let leftSubTreeHeight = dive(node.left, level + 1);
+            let rightSubTreeHeight = dive(node.right, level + 1);
+
+            return leftSubTreeHeight > rightSubTreeHeight ? leftSubTreeHeight : rightSubTreeHeight;
+        }
+
+        let height = dive(targetNode);
+
+        return height;
+
+    }
+
+    depth(value) {
+        if(this.root === null) return;
+        let current = this.root;
+        let level = 0;
+
+        while(current !== null) {
+            if(current.value === value) return level;
+            current = current.value < value ? current.right : current.left;
+            level++
+        }
+    }
 }
 
 export {Tree};
