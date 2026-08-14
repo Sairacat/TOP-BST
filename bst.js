@@ -166,11 +166,16 @@ class Tree {
             index++;
         }
 
-        return 'traversal completed'
+        return 'completed'
 
     }
 
-    levelOrderForEachRec(callback, node) {
+    levelOrderForEachRec(callback) {
+        if(typeof callback !== 'function') {
+            throw new Error('A callback is required');
+        }
+
+        const root = this.root;
         const valueArray = [];
 
         const recForEach = function(node, level = 0) {
@@ -184,14 +189,71 @@ class Tree {
             recForEach(node.right, level + 1);// same here.
         }
 
-        recForEach(node);
+        recForEach(root);
 
         const flatValueArray = valueArray.flat();
         for(let value of flatValueArray) {
             callback(value);
         }
 
-        return 'traversal completed';
+        return 'completed';
+    }
+
+    inOrderForEach(callback) {
+        if(typeof callback !== 'function') {
+            throw new Error('A callback is required');
+        }
+
+        const root = this.root;
+        const inOrderRec = function(node) {
+            if(node === null) return;
+
+            inOrderRec(node.left);
+            callback(node.value);
+            inOrderRec(node.right);
+        }
+
+        inOrderRec(root);
+
+        return 'completed';
+    }
+
+    preOrderForEach(callback) {
+        if(typeof callback !== 'function') {
+            throw new Error('A callback is required');
+        }
+
+        const root = this.root;
+        const preOrderRec = function(node) {
+            if(node === null) return;
+
+            callback(node.value);
+            preOrderRec(node.left);
+            preOrderRec(node.right);
+        }
+
+        preOrderRec(root);
+
+        return 'completed';
+    }
+
+    postOrderForEach(callback) {
+        if(typeof callback !== 'function') {
+            throw new Error('A callback is required');
+        }
+
+        const root = this.root;
+        const postOrderRec = function(node) {
+            if(node === null) return;
+
+            postOrderRec(node.left);
+            postOrderRec(node.right);
+            callback(node.value);
+        }
+
+        postOrderRec(root);
+
+        return 'completed';
     }
 }
 

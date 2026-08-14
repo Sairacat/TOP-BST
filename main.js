@@ -20,7 +20,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 const inputArray = [12, 37, 66, 78, 66, 23, 49, 52, 9];
 const bst = new Tree(inputArray);
 
-console.log(bst.levelOrderForEachRec(logValue, bst.root));
+console.log(bst.postOrderForEach(logValue));
 prettyPrint(bst.root);
 
 function logValue(value) {
