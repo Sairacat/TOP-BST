@@ -296,6 +296,30 @@ class Tree {
             level++
         }
     }
+
+    isBalanced() {
+        if(this.root === null) return true;
+
+        let isBalanced = true;
+        const root = this.root;
+
+        const checkBalance = function(node) {
+            if(node === null) return -1;
+
+            let leftSubTreeHeight = checkBalance(node.left);
+            let rightSubTreeHeight = checkBalance(node.right);
+
+            if(Math.abs(leftSubTreeHeight - rightSubTreeHeight) > 1) {
+                isBalanced = false;
+            }
+
+            return Math.max(leftSubTreeHeight, rightSubTreeHeight) + 1;
+        }
+
+        checkBalance(root);
+
+        return isBalanced;
+    }
 }
 
 export {Tree};
