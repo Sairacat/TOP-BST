@@ -171,19 +171,27 @@ class Tree {
     }
 
     levelOrderForEachRec(callback, node) {
-        
-        callback(node.value);
-        let pointer = node;
-        let leftNode = node.left;
-        let rightNode = node.right;
+        const valueArray = [];
 
-        node.next = leftNode;
-        leftNode.next = rightNode;
+        const recForEach = function(node, level = 0) {
+            if(node === null) return;
+            if(valueArray[level] === undefined) {
+                valueArray.push([]);
+            }
 
-        
+            valueArray[level].push(node.value);
+            recForEach(node.left, level + 1); // level++ will pass the current value of level to the function then increment it, which is not intended.
+            recForEach(node.right, level + 1);// same here.
+        }
 
-        this.levelOrderForEachRec(callback, node.right);
+        recForEach(node);
 
+        const flatValueArray = valueArray.flat();
+        for(let value of flatValueArray) {
+            callback(value);
+        }
+
+        return 'traversal completed';
     }
 }
 
