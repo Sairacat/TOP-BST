@@ -14,13 +14,7 @@ class Tree {
 
     static #buildTree(arr) {
         if(!Array.isArray(arr) || arr.length === 0) return null;
-        const preparedArray = [];
-        for(let item of arr) {
-            if(!preparedArray.includes(item)){
-                preparedArray.push(item);
-            }
-        }
-        preparedArray.sort((a, b) => a - b);
+        const preparedArray = [...new Set(arr)].sort((a, b) => a - b);
 
         const buildBST = function(start, end) {
             if(start > end) return null;
