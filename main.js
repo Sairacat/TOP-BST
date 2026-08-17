@@ -19,8 +19,9 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 const inputArray = returnRandomArray();
 const bst = new Tree(inputArray);
-prettyPrint(bst.root);
 console.log(bst.isBalanced());
+prettyPrint(bst.root);
+
 
 
 bst.insert(121);
@@ -28,10 +29,12 @@ bst.insert(101);
 bst.insert(382);
 bst.insert(385);
 bst.insert(311);
-prettyPrint(bst.root)
 console.log(bst.isBalanced());
-bst.rebalance();
 prettyPrint(bst.root);
-console.log(bst.isBalanced())
+
+bst.rebalance();
+console.log(bst.isBalanced());
+prettyPrint(bst.root);
+
 
 

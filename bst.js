@@ -315,7 +315,7 @@ class Tree {
 
         checkBalance(root);
 
-        return isBalanced;
+        return `Balanced: ${isBalanced}`;
     }
 
     rebalance() {
