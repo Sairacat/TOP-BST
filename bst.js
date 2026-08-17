@@ -52,21 +52,18 @@ class Tree {
             return;
         }
         let current = this.root;
-        if(current.value === value) return;
-        let isGreater = current.value < value
-        let nextPointer = isGreater ? current.right : current.left;
+        let parent = null;
 
-        while(nextPointer !== null) {
-            current = nextPointer;
+        while(current !== null) {
             if(current.value === value) return;
-            isGreater = current.value < value;
-            nextPointer = isGreater ? current.right : current.left;
+            parent = current;
+            current = current.value < value ? current.right : current.left;
         }
 
-        if(isGreater) {
-            current.right = new Node(value);
+        if(parent.value > value) {
+            parent.left = new Node(value);
         }else {
-            current.left = new Node(value);
+            parent.right = new Node(value);
         }
     }
 
@@ -320,6 +317,17 @@ class Tree {
 
         return isBalanced;
     }
+
+    rebalance() {
+        if(this.root === null) return;
+        const valueArray = [];
+
+        this.inOrderForEach(value => valueArray.push(value));
+        
+        const balancedTree = Tree.#buildTree(valueArray);
+        this.root = balancedTree;
+    }
+
 }
 
 export {Tree};

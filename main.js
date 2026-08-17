@@ -17,12 +17,21 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 
 
-const inputArray = [12, 37, 66, 78, 66, 23, 49, 52, 9];
+const inputArray = returnRandomArray();
 const bst = new Tree(inputArray);
-
-console.log(bst.isBalanced());
 prettyPrint(bst.root);
+console.log(bst.isBalanced());
 
-function logValue(value) {
-  console.log(value)
-}
+
+bst.insert(121);
+bst.insert(101);
+bst.insert(382);
+bst.insert(385);
+bst.insert(311);
+prettyPrint(bst.root)
+console.log(bst.isBalanced());
+bst.rebalance();
+prettyPrint(bst.root);
+console.log(bst.isBalanced())
+
+
